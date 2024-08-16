@@ -45,6 +45,9 @@ export const noteReducer = (state, action) => {
         case "SET_SELECT_VALUE": {
             return { ...state, selectValue: action.payload }
         }
+        case "SET_MSG": {
+            return { ...state, msg: action.payload }
+        }
         default: return state;
     }
 }

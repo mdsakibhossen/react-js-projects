@@ -14,6 +14,7 @@ const initialStates = {
   editMode: false,
   searchValue: "",
   selectValue: "ALL",
+  msg: { text: "", isSucceed: true, isDeleteMsg: false },
 };
 const NoteProvider = ({ children }) => {
   const [noteStates, dispatch] = useReducer(noteReducer, initialStates);

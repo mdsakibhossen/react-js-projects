@@ -4,7 +4,6 @@ import useLocalStorage from "../../../../hooks/useLocalStorage";
 import { useContext, useEffect } from "react";
 import { NoteContext } from "../../../../contexts/NoteContext";
 import { formatDateTime } from "../../../../utils/formatDateTime";
-import { toast } from "react-toastify";
 
 const NoteItem = ({ note }) => {
   const { title, description, isCompleted, createdAt } = note;
@@ -14,11 +13,17 @@ const NoteItem = ({ note }) => {
     noteStates: { notes },
     dispatch,
   } = useContext(NoteContext);
+
   const removeHandler = (noteId) => {
     const notes = localNotes.filter((item) => item.id !== noteId);
     setLocalNotes(notes);
-    toast.success("Removed Successfully!", {
-      position: "bottom-left",
+    dispatch({
+      type: "SET_MSG",
+      payload: {
+        text: "Removed Successfully!!!",
+        isSucceed: true,
+        isDeleteMsg: true,
+      },
     });
   };
 

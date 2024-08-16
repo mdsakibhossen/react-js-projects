@@ -5,7 +5,7 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 
 const NoteList = () => {
   const {
-    noteStates: { notes, searchValue, selectValue },
+    noteStates: { notes, searchValue, selectValue, msg },
     dispatch,
   } = useContext(NoteContext);
   const [localNotes] = useLocalStorage("localNotes", []);
@@ -42,6 +42,17 @@ const NoteList = () => {
           : "w-full lg:w-2/3 flex items-center justify-center self-center"
       }
     >
+      {msg.text && msg.isDeleteMsg && (
+        <small
+          className={`${
+            msg.isSucceed
+              ? "dark:text-green-300 text-green-500"
+              : "dark:text-red-300 text-red-500"
+          } block -mb-2`}
+        >
+          {msg.text}
+        </small>
+      )}
       {allNotes.length ? (
         allNotes.map((note) => <NoteItem note={note} key={note.id} />)
       ) : (
