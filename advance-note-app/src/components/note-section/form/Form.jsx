@@ -1,13 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { NoteContext } from "../../../contexts/NoteContext";
 import useLocalStorage from "./../../../hooks/useLocalStorage";
 
 const Form = () => {
   const {
-    noteStates: { notes, note, editMode, msg },
+    noteStates: { notes, note, editMode, editableNote, msg },
     dispatch,
   } = useContext(NoteContext);
   const [localNotes, setLocalNotes] = useLocalStorage("localNotes", []);
+
+  // Run When Title & Description Takes Input
   const changeHandler = (e) => {
     dispatch({
       type: "SET_NOTE",
@@ -18,9 +20,10 @@ const Form = () => {
     });
   };
 
+  // Submit Handler
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!note.title || !note.description) {
+    if (!note.title.trim() || !note.description.trim()) {
       dispatch({
         type: "SET_MSG",
         payload: {
@@ -42,14 +45,24 @@ const Form = () => {
     });
     dispatch({ type: "CLEAR_FORM" });
   };
+
+  // Add Note Handler
   const addHandler = () => {
     const newNote = {
       ...note,
       id: Date.now() + "",
       createdAt: Date.now(),
     };
-    setLocalNotes([newNote, ...localNotes]);
+
+    // Reset localNotes if all notes have been deleted
+    if (notes.length === 0) {
+      setLocalNotes([newNote]);
+    } else {
+      setLocalNotes([newNote, ...localNotes]);
+    }
   };
+
+  // Setting Local Notes to State (That's why notes are seen into NoteList)
   useEffect(() => {
     dispatch({
       type: "SET_NOTES",
@@ -57,9 +70,10 @@ const Form = () => {
     });
   }, [localNotes]);
 
+  // Update Note Handler
   const updateHandler = () => {
     const updatedNotes = notes.map((item) => {
-      if (item.id === note.id) {
+      if (item.id === editableNote.id) {
         return {
           ...item,
           title: note.title,

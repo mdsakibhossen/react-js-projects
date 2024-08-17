@@ -16,12 +16,12 @@ export const noteReducer = (state, action) => {
                     createdAt: null
                 },
                 editMode: false,
+                editableNote: null
             }
         }
         case "SET_EDIT_MODE": {
-            return { ...state, note: action.payload, editMode: true }
+            return { ...state, note: action.payload, editMode: true, editableNote: action.payload }
         }
-
 
         case "REMOVE_NOTE": {
             return { ...state, notes: state.notes.filter(note => note.id !== action.payload) }

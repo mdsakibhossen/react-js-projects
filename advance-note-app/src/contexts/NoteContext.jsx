@@ -12,6 +12,7 @@ const initialStates = {
   },
   notes: [],
   editMode: false,
+  editableNote: null,
   searchValue: "",
   selectValue: "ALL",
   msg: { text: "", isSucceed: true, isDeleteMsg: false },

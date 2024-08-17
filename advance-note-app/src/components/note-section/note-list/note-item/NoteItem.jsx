@@ -1,22 +1,24 @@
 import { FiEdit } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import useLocalStorage from "../../../../hooks/useLocalStorage";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NoteContext } from "../../../../contexts/NoteContext";
 import { formatDateTime } from "../../../../utils/formatDateTime";
 
 const NoteItem = ({ note }) => {
   const { title, description, isCompleted, createdAt } = note;
   const dateTime = formatDateTime(createdAt);
-  const [localNotes, setLocalNotes] = useLocalStorage("localNotes", []);
+  const [setLocalNotes] = useLocalStorage("localNotes", []);
   const {
     noteStates: { notes },
     dispatch,
   } = useContext(NoteContext);
 
+  // Remove Handler
   const removeHandler = (noteId) => {
-    const notes = localNotes.filter((item) => item.id !== noteId);
-    setLocalNotes(notes);
+    const updatedNotes = notes.filter((item) => item.id !== noteId);
+    dispatch({ type: "SET_NOTES", payload: updatedNotes });
+    setLocalNotes(updatedNotes);
     dispatch({
       type: "SET_MSG",
       payload: {
@@ -27,10 +29,12 @@ const NoteItem = ({ note }) => {
     });
   };
 
+  // Edit Handler
   const editHandler = (note) => {
     dispatch({ type: "SET_EDIT_MODE", payload: note });
   };
 
+  // Change Completed/Uncompleted Status
   const changeStatusHandler = (noteId) => {
     const updatedNotes = notes.map((item) => {
       if (item.id === noteId) {
@@ -43,10 +47,6 @@ const NoteItem = ({ note }) => {
     });
     setLocalNotes(updatedNotes);
   };
-
-  useEffect(() => {
-    dispatch({ type: "SET_NOTES", payload: localNotes });
-  }, [localNotes]);
 
   return (
     <div
