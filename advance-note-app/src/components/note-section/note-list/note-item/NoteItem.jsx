@@ -45,6 +45,7 @@ const NoteItem = ({ note }) => {
       }
       return item;
     });
+    dispatch({ type: "SET_NOTES", payload: updatedNotes });
     setLocalNotes(updatedNotes);
   };
 
