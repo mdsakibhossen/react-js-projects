@@ -8,7 +8,7 @@ import { formatDateTime } from "../../../../utils/formatDateTime";
 const NoteItem = ({ note }) => {
   const { title, description, isCompleted, createdAt } = note;
   const dateTime = formatDateTime(createdAt);
-  const [setLocalNotes] = useLocalStorage("localNotes", []);
+  const [,setLocalNotes] = useLocalStorage("localNotes", []);
   const {
     noteStates: { notes },
     dispatch,
